@@ -1,39 +1,37 @@
 # mnkm.github.io
 
-このリポジトリは **旧 GitHub Pages（`https://mnkm.github.io/`）から新サイトへの転送用** です。
-サイト本体は Cloudflare Pages に移行しました。
+旧 GitHub Pages(`https://mnkm.github.io/`)へのアクセスを、新しいサイト https://mnkm.page/ へ転送するためのリポジトリです。サイトの中身はありません。
 
-👉 **新しいサイト: https://mnkm.page/**
+## 転送先
 
-## 旧URLからの転送
+旧 URL へのアクセスは新しいサイトの同じパスへ 301 で転送されます。
 
-GitHub Pages のカスタムドメイン設定により、旧URLへのアクセスは **301リダイレクト** で新サイトの同じパスへ転送されます。
-
-| 旧URL | 新URL |
+| 旧 URL | 新 URL |
 | --- | --- |
 | `https://mnkm.github.io/` | `https://mnkm.page/` |
 | `https://mnkm.github.io/<repo>/` | `https://mnkm.page/<repo>/` |
 
 ## 仕組み
 
-- このリポジトリの **Settings → Pages → Custom domain** に `mnkm.page` を設定しています（`CNAME` ファイル）
-- ユーザーサイトにカスタムドメインがあると、プロジェクトサイト（`mnkm.github.io/<repo>/`）も同じドメイン配下へ転送されます
-- `mnkm.page` の DNS は Cloudflare を向いており、Worker がパスに応じて各 Cloudflare Pages プロジェクトへルーティングしています
-- GitHub の Pages 設定画面に「DNS check unsuccessful」と表示されますが、DNS を Cloudflare に向けているためで想定どおりです
+- このリポジトリの Settings → Pages → Custom domain に `mnkm.page` を設定しています(`CNAME` ファイル)。
+- ユーザーサイト(このリポジトリ)にカスタムドメインがあると、GitHub はプロジェクトサイト(`mnkm.github.io/<repo>/`)へのアクセスも同じドメインへ転送します。
+- `mnkm.page` の DNS は Cloudflare に向けてあり、Cloudflare の Worker がパスごとに各サイトへ振り分けます。
+- DNS を Cloudflare に向けているため、GitHub の Pages の設定画面には「DNS check unsuccessful」と表示されます。転送には影響しません。
 
-## ⚠️ 注意
+## 注意
 
-以下を行うと、旧URLからの転送が止まります。
+次の操作をすると、旧 URL からの転送が止まります。
 
-- このリポジトリを **削除・リネームしない**
-- このリポジトリの **GitHub Pages を無効化しない**
-- `CNAME` ファイル／Custom domain 設定を **削除・変更しない**
-- 各プロジェクトリポジトリに **個別のカスタムドメインを設定しない**（そちらへ転送されてしまうため）
+- このリポジトリを削除する、または名前を変える
+- このリポジトリの GitHub Pages を無効にする
+- `CNAME` ファイルや Custom domain の設定を消す、または変える
+- ほかのリポジトリに個別のカスタムドメインを設定する(そのリポジトリのアクセスは、そのドメインへ転送されるようになります)
 
 ## 動作確認
 
 ```sh
 curl -I https://mnkm.github.io/
 curl -I https://mnkm.github.io/<repo>/
-# → HTTP/2 301 / location: https://mnkm.page/... であればOK
 ```
+
+`HTTP/2 301` と `location: https://mnkm.page/...` が返れば、転送されています。
